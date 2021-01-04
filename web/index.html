@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
+
+    The path provided below has to start and end with a slash "/" in order for
+    it to work correctly.
+
+    Fore more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+  -->
+  <base href="/">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="A new Flutter project.">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="hands2gether">
+  <!-- <meta name="google-signin-client_id"
+    content="285061585278-mgbnio4t0bucrfbf3a2bbl34tuv6j285.apps.googleusercontent.com" /> -->
+  <meta name="google-signin-client_id"
+    content="574967526421-5l9a2rdtv58itmm5l2sb4mmd1ovm2qjs.apps.googleusercontent.com" />
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png" />
+
+  <title>hands2gether</title>
+  <link rel="manifest" href="manifest.json">
+</head>
+
+<body>
+  <!-- This script installs service_worker.js to provide PWA functionality to
+       application. For more information, see:
+       https://developers.google.com/web/fundamentals/primers/service-workers -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('flutter-first-frame', function () {
+        navigator.serviceWorker.register('flutter_service_worker.js');
+      });
+    }
+  </script>
+
+
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-analytics.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-firestore.js"></script>
+
+  <script>
+    // var firebaseConfig = {
+    //   apiKey: "AIzaSyCb7uQGLKAy_ymzwqlZtWFlaowqeTMFakY",
+    //   authDomain: "handstohgether.firebaseapp.com",
+    //   databaseURL: "https://handstohgether.firebaseio.com",
+    //   projectId: "handstohgether",
+    //   storageBucket: "handstohgether.appspot.com",
+    //   messagingSenderId: "285061585278",
+    //   appId: "1:285061585278:web:638330518d04e2a566bb2f",
+    //   measurementId: "G-B55X56DFGJ"
+    // };
+    // // Initialize Firebase
+    // firebase.initializeApp(firebaseConfig);
+    // firebase.analytics();
+
+    var firebaseConfig = {
+      apiKey: "AIzaSyDUFK4IlYXK8_W7DenKInk2QqLkdvP99k0",
+      authDomain: "hands2gether-1b40d.firebaseapp.com",
+      databaseURL: "https://hands2gether-1b40d.firebaseio.com",
+      projectId: "hands2gether-1b40d",
+      storageBucket: "hands2gether-1b40d.appspot.com",
+      messagingSenderId: "574967526421",
+      appId: "1:574967526421:web:39ed83f51111714d828a1c",
+      measurementId: "G-Z9PPVHQ4XY"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+
+  </script>
+
+  <script src="main.dart.js" type="application/javascript"></script>
+</body>
+
+</html>

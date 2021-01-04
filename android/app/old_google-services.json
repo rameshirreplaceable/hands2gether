@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "285061585278",
+    "firebase_url": "https://handstohgether.firebaseio.com",
+    "project_id": "handstohgether",
+    "storage_bucket": "handstohgether.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:285061585278:android:9f0ef0f96a2d37ed66bb2f",
+        "android_client_info": {
+          "package_name": "com.example.hands2gether"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "285061585278-ds57dblc0t7r7sbempdkqfc2mvpr0c30.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.hands2gether",
+            "certificate_hash": "756070746f51d1f0c7f36220dc6e28604f1a5dd8"
+          }
+        },
+        {
+          "client_id": "285061585278-mgbnio4t0bucrfbf3a2bbl34tuv6j285.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWYDwOYw1q0h1qsJNKhekORxSlVYoBAxM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "285061585278-7s4509ir1aj9l96ufkj8vl39sev2mtsf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
