@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -5,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:hands2gether/common/custom_appbar.dart';
 import 'package:hands2gether/common/custom_bottombar.dart';
+import 'package:hands2gether/localmodel/country.model.dart';
 import 'package:hands2gether/model/listing.dart';
 import 'package:hands2gether/redux/store.dart';
 
@@ -21,16 +25,35 @@ class _AddListingScreenState extends State<AddListingScreen> {
   @override
   void initState() {
     super.initState();
-    getCountry();
+    _getCountry();
   }
 
-  getCountry() async {}
+  Future<String> _loadFromAsset() async {
+    return await rootBundle.loadString("assets/json/country.json");
+  }
+
+  List _countryState = [];
+  _getCountry() async {
+    String data = await _loadFromAsset();
+    final jsonResult = jsonDecode(data);
+    List aa = [];
+    for (var i in jsonResult) {
+      aa.add(Localcountrymodel.fromMap(i));
+    }
+    setState(() {
+      _countryState = aa;
+    });
+  }
 
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
-
   Listingmodel listingmodel = new Listingmodel();
   var _currentSelectedCategory;
+
   var _currentSelectedCountry;
+
+  var showStateDropdown = false;
+  var _currentStateArr = [];
+  var _currentSelectedState;
   var countryValue;
   bool isValidEmail(String input) {
     final RegExp regex = new RegExp(
@@ -40,16 +63,6 @@ class _AddListingScreenState extends State<AddListingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var _currencies = [
-      "Food",
-      "Transport",
-      "Personal",
-      "Shopping",
-      "Medical",
-      "Rent",
-      "Movie",
-      "Salary"
-    ];
     return StoreConnector<AppState, AppState>(
         converter: (store) => store.state,
         builder: (context, state) => Scaffold(
@@ -67,55 +80,7 @@ class _AddListingScreenState extends State<AddListingScreen> {
                         SizedBox(height: 10),
                         _categorySection(),
                         SizedBox(height: 10),
-                        FormField<String>(
-                          validator: (val) {
-                            return val == null || val == ''
-                                ? 'Please select Country'
-                                : null;
-                          },
-                          builder: (FormFieldState<String> state) {
-                            return InputDecorator(
-                              decoration: InputDecoration(
-                                errorText: state.hasError
-                                    ? "Please select Country"
-                                    : null,
-                                isDense: true,
-                                hintStyle: TextStyle(fontSize: 14),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5),
-                                  borderSide: BorderSide(
-                                    width: 0,
-                                    style: BorderStyle.none,
-                                  ),
-                                ),
-                                filled: true,
-                                fillColor: Colors.grey[200],
-                                contentPadding: EdgeInsets.all(15),
-                              ),
-                              isEmpty: _currentSelectedCountry == '',
-                              child: DropdownButtonHideUnderline(
-                                child: DropdownButton<String>(
-                                  hint: Text("Choose  Country *",
-                                      style: TextStyle(fontSize: 14.0)),
-                                  value: _currentSelectedCountry,
-                                  isDense: true,
-                                  onChanged: (String newValue) {
-                                    setState(() {
-                                      _currentSelectedCountry = newValue;
-                                      state.didChange(newValue);
-                                    });
-                                  },
-                                  items: _currencies.map((String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
+                        _countrySection(),
                         SizedBox(height: 10),
                         TextFormField(
                           // validator: (value) {
@@ -374,12 +339,127 @@ class _AddListingScreenState extends State<AddListingScreen> {
                 ),
               )
             : SizedBox(),
-        _currentSelectedCategory != null
+      ],
+    );
+  }
+
+  Widget _countrySection() {
+    return Column(
+      children: [
+        FormField<String>(
+          validator: (val) {
+            return val == null || val == '' ? 'Please select Country' : null;
+          },
+          builder: (FormFieldState<String> state) {
+            return InputDecorator(
+              decoration: InputDecoration(
+                errorText: state.hasError ? "Please select Country" : null,
+                isDense: true,
+                hintStyle: TextStyle(fontSize: 14),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5),
+                  borderSide: BorderSide(
+                    width: 0,
+                    style: BorderStyle.none,
+                  ),
+                ),
+                filled: true,
+                fillColor: Colors.grey[200],
+                contentPadding: EdgeInsets.all(15),
+              ),
+              isEmpty: _currentSelectedCountry == '',
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<String>(
+                  hint: Text("Choose  Country *",
+                      style: TextStyle(fontSize: 14.0)),
+                  value: _currentSelectedCountry,
+                  isDense: true,
+                  onChanged: (newValue) {
+                    print(newValue);
+                    setState(() {
+                      _currentSelectedCountry = newValue;
+                      state.didChange(newValue);
+                      showStateDropdown = true;
+                    });
+
+                    Timer(
+                        Duration(microseconds: 5000),
+                        () => {
+                              _countryState.forEach((element) {
+                                if (element.code2 == newValue) {
+                                  setState(() {
+                                    showStateDropdown = false;
+                                    _currentStateArr = element.states;
+                                    _currentSelectedState = '';
+                                  });
+                                }
+                              })
+                            });
+                  },
+                  items: _countryState.map((dynamic value) {
+                    return DropdownMenuItem<String>(
+                      value: value.code2,
+                      child: Text(value.name),
+                    );
+                  }).toList(),
+                ),
+              ),
+            );
+          },
+        ),
+        showStateDropdown == false
             ? Container(
                 margin: EdgeInsets.only(top: 10),
-                child: Text("Test"),
+                child: FormField<String>(
+                  validator: (val) {
+                    return val == null || val == ''
+                        ? 'Please select State'
+                        : null;
+                  },
+                  builder: (FormFieldState<String> state) {
+                    return InputDecorator(
+                      decoration: InputDecoration(
+                        errorText:
+                            state.hasError ? "Please select State" : null,
+                        isDense: true,
+                        hintStyle: TextStyle(fontSize: 14),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: BorderSide(
+                            width: 0,
+                            style: BorderStyle.none,
+                          ),
+                        ),
+                        filled: true,
+                        fillColor: Colors.grey[200],
+                        contentPadding: EdgeInsets.all(15),
+                      ),
+                      isEmpty: _currentSelectedState == '',
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          hint: Text("Choose  State *",
+                              style: TextStyle(fontSize: 14.0)),
+                          value: _currentSelectedState,
+                          isDense: true,
+                          onChanged: (String newValue) {
+                            setState(() {
+                              _currentSelectedState = newValue;
+                              state.didChange(newValue);
+                            });
+                          },
+                          items: _currentStateArr.map((dynamic value) {
+                            return DropdownMenuItem<String>(
+                              value: value.name,
+                              child: Text(value.name),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    );
+                  },
+                ),
               )
-            : SizedBox(),
+            : SizedBox()
       ],
     );
   }

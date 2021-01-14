@@ -1,24 +1,29 @@
 import 'dart:convert';
 
-class Localcountrystatemodel {
-  String code2;
-  String code3;
-  String name;
-  String capital;
-  String region;
-  String subregion;
-  List<State> states;
-  Localcountrystatemodel({
-    this.code2,
-    this.code3,
-    this.name,
-    this.capital,
-    this.region,
-    this.subregion,
-    this.states,
+import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
+
+import 'state.dart';
+
+class Localcountrymodel extends Equatable {
+  final String code2;
+  final String code3;
+  final String name;
+  final String capital;
+  final String region;
+  final String subregion;
+  final List<State> states;
+  Localcountrymodel({
+    @required this.code2,
+    @required this.code3,
+    @required this.name,
+    @required this.capital,
+    @required this.region,
+    @required this.subregion,
+    @required this.states,
   });
 
-  Localcountrystatemodel copyWith({
+  Localcountrymodel copyWith({
     String code2,
     String code3,
     String name,
@@ -27,7 +32,7 @@ class Localcountrystatemodel {
     String subregion,
     List<State> states,
   }) {
-    return Localcountrystatemodel(
+    return Localcountrymodel(
       code2: code2 ?? this.code2,
       code3: code3 ?? this.code3,
       name: name ?? this.name,
@@ -50,10 +55,10 @@ class Localcountrystatemodel {
     };
   }
 
-  factory Localcountrystatemodel.fromMap(Map<String, dynamic> map) {
+  factory Localcountrymodel.fromMap(Map<String, dynamic> map) {
     if (map == null) return null;
 
-    return Localcountrystatemodel(
+    return Localcountrymodel(
       code2: map['code2'] ?? '',
       code3: map['code3'] ?? '',
       name: map['name'] ?? '',
@@ -67,8 +72,8 @@ class Localcountrystatemodel {
 
   String toJson() => json.encode(toMap());
 
-  factory Localcountrystatemodel.fromJson(String source) =>
-      Localcountrystatemodel.fromMap(json.decode(source));
+  factory Localcountrymodel.fromJson(String source) =>
+      Localcountrymodel.fromMap(json.decode(source));
 
   @override
   bool get stringify => true;
@@ -85,40 +90,4 @@ class Localcountrystatemodel {
       states,
     ];
   }
-}
-
-class State {
-  String code;
-  String name;
-  State({
-    this.code,
-    this.name,
-  });
-
-  State copyWith({String code, String name}) {
-    return State(
-      code: code ?? this.code,
-      name: name ?? this.name,
-    );
-  }
-
-  Map<String, dynamic> toMap() {
-    return {'code': code, 'name': name};
-  }
-
-  factory State.fromMap(Map<String, dynamic> map) {
-    if (map == null) return null;
-
-    return State(code: map['code'] ?? '', name: map['name'] ?? '');
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory State.fromJson(String source) => State.fromMap(json.decode(source));
-
-  @override
-  bool get stringify => true;
-
-  @override
-  List<Object> get props => [code, name];
 }
