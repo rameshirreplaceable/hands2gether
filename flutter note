@@ -1,0 +1,1218 @@
+Flutter Note:
+
+    Build:
+            Fluttre clean
+            Flutter build apk
+            Flutter build ios
+
+"How to create keysore file":
+    keyStore cmd:
+        keytool -list -v -alias androiddebugkey -keystore %USERPROFILE%\.android\debug.keystore
+    out somthing  like:  (Debug signing certificate SHA-1 (optional))
+        2A:CC:DE:BF:87:0C:6B:1E:82:73:17:9C:D3:58:B6:88:DD:69:B8:9B
+
+set Web Port : flutter --web-port 8080
+
+Mobx:
+     flutter packages pub run build_runner build
+
+
+pubspec.yaml :
+                http: ^0.12.0+4
+                flutter_spinkit: ^3.1.0
+                provider: ^3.1.0+1
+
+MobX:
+    dependencies:
+        mobx:
+        flutter_mobx:
+        .....
+        .....
+        .....
+   
+    dev_dependencies:
+        build_runner:
+        mobx_codegen:
+
+    "cmd to generate auto code:"
+        cmd:  flutter packages pub run build_runner watch
+
+Icons:
+
+    https://pub.dev/packages/flutter_icons#-installing-tab-
+
+    dependencies:
+        flutter_icons: ^1.1.0
+
+read assets json :
+
+    child: FutureBuilder(
+        future: DefaultAssetBundle.of(context)
+            .loadString("assets/jsons/mobilecode.json"),
+        builder: (context, snapshot) {
+        var code = json.decode(snapshot.data.toString());
+        if(code == null){
+            return Text("data");
+        }else{
+            return Text(code['name']);
+        }
+    )
+
+
+SeTimeout: setTimeout
+
+    Timer timer = new Timer(new Duration(seconds: 5), () {
+        print("Print after 5 seconds");
+    });
+
+Way of Navigation:
+
+        URL: https://resocoder.com/2019/04/27/flutter-routes-navigation-parameters-named-routes-ongenerateroute/
+
+        1.)
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) =>SecoundPage()));
+        2.)
+            Navigator.pop(context);
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => LoginPage(loginIn: false, data: false)));
+
+        3.)
+            Navigator.pushReplacementNamed(context, '/');
+        4.)
+            Navigator.of(context).pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
+
+       
+
+
+
+Topbar Bottombar , Orientation fixing of device:
+
+        Fixing Device Orientation:
+           
+
+
+Colors setting for Bottombar of device
+
+        SystemChrome.setpreferredOrientations([
+            statusBarColor: Colors.white,
+            statusBarIconBrightness: Brightness.dart,
+            systemNavigatorBarColor: Colors.deepOrange,
+            systemNavigatorBarBrightness: Brightness.dark,
+
+        ])
+
+Routing:
+
+        1.) PushNamed Method
+            routes: <String, WidgetBuilder>{
+                '/aboutus': (BuildContext  context) => AboutPage()
+            },
+            routes: {
+                '*': (context) => HomePage(),
+                '/aboutus': (context) => AboutPage(),
+            }
+
+            onPressed: () {
+                Navigator.of(context).pushNamed('/aboutus');
+            }),
+
+        2.) Push Method
+            Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => AboutPage()));
+       
+            Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AboutPage()));
+
+            Navigator.of(context).pop(); ----> to Back
+
+Provider:
+
+        home: ChangeNotifierProvider(
+            builder: (context) => ToDoModel(),
+            child: TodoList(),
+        )
+
+        child: Consumer<ToDoModel>(
+            builder: (context, value, child) {
+                return ListView.builder(
+                controller: value.length,
+                itemCount: 30,
+                itemBuilder: (context, index) {
+                    return Text("Ramesh");
+                });
+            }
+        ),
+
+        Provider.of<ToDoModel>(context).addTaskList();
+
+
+        -----> ToDoModel will be availabel to all TodoList() screens and its child
+
+
+SnakBar:
+        flushbar: ^1.10.0
+        Plugin : https://github.com/AndreHaueisen/flushbar
+
+        Flushbar(
+            flushbarStyle: FlushbarStyle.GROUNDED,
+            flushbarPosition: FlushbarPosition.TOP,
+            icon: Icon(
+            Icons.error,
+            color: Colors.redAccent,
+            ),
+            // title: "Error",
+            message:
+                "Please Enter Valied Number",
+            duration: Duration(seconds: 3),
+        )..show(context);
+
+       
+        ( OR )
+
+            Builder(
+                    builder: (context) {
+                      return FlatButton(
+                        shape: new RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(8.0),
+                        ),
+                        color: Color(0xfffbcb35),
+                        onPressed: () {
+                           
+                            Scaffold.of(context).showSnackBar(SnackBar(
+                            backgroundColor: Colors.red,
+                            content: Row(
+                            children: <Widget>[
+                                Padding(
+                                padding: const EdgeInsets.only(right: 10.0),
+                                child: Icon(Icons.error),
+                                ),
+                                Text('Enter Valied Number')
+                            ],
+                            ),
+                        ));
+                         
+                        },
+                        child: Text(
+                          "Send SMS Code"
+                        ),
+                      );
+                    },
+                  )
+
+
+BottomSheet or (showModalBottomSheet):
+    showModalBottomSheet(
+        backgroundColor: Colors.transparent,
+        context: context,
+        // barrierColor: Colors.red,
+        //barrierColor: Colors.black.withAlpha(1),
+        builder: (BuildContext bc) {
+            return Container(
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20.0),
+                topRight: Radius.circular(20.0),
+                )
+            ),
+            child: new Wrap(
+                children: <Widget>[
+                new ListTile(
+                    leading: new Icon(Icons.music_note),
+                    title: new Text('Music'),
+                    onTap: () => {}),
+                new ListTile(
+                    leading: new Icon(Icons.videocam),
+                    title: new Text('Video'),
+                    onTap: () => {},
+                ),
+                ],
+            ),
+            );
+        });
+
+
+Container:
+
+        Container(
+            decoration: BoxDecoration(
+                color: Color(0xFFFFFFFF),
+                border: Border(
+                    left: BorderSide(
+                      color: Color(0xDFDFDFDF),
+                      width: 1.0
+                    )
+                )),
+                borderRadius: BorderRadius.circular(2.0),
+                borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(20.0),
+                    topLeft: Radius.circular(20.0)
+                )
+                boxShadow: [
+                new BoxShadow(
+                    color: Color(0xDFDFDFDF),
+                    offset: new Offset(5.0, 5.0),
+                    blurRadius: 5.0)
+                ],
+            ),
+            margin: EdgeInsets.symmetric(vertical: 5.0, horizontal: 8.0),
+            padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
+        )
+
+
+Stack:
+
+        body: Stack(
+            overflow: Overflow.visible,
+            fit: StackFit.expand,
+            alignment: Alignment.topLeft,
+            children: <Widget>[
+            Container(
+                // color: Colors.red,
+                width: 300,
+                height: 300,
+                child: Image.asset('assets/img/todo.png', fit: BoxFit.contain)
+            )
+            ],
+        ),
+
+DraggableScrollableSheet:
+
+        DraggableScrollableSheet(
+              maxChildSize: 0.85,
+              builder: (context, cnt) {
+                return Container(
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(20.0),
+                          topLeft: Radius.circular(20.0))),
+                  child: ListView.builder(
+                      controller: cnt,
+                      itemCount: 10,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          trailing: Icon(Icons.check_circle, color: Colors.blue,),
+                          isThreeLine: false,
+                          subtitle: Text("This is Details of Task $index" ),
+                          title: Text("Task no $index",
+                              style: TextStyle(
+                                  color: Colors.grey[900],
+                                  fontWeight: FontWeight.bold)),
+                        );
+                      }),
+                );
+              })
+
+
+Scrolling issue while typing :
+
+    children: <Widget>[
+        SingleChildScrollView(
+            Child : Container(
+                height: MediaQuery.of(context).size.height,
+                child: Padding(
+                    ....
+                    ....
+                    ....
+                )
+            )
+        )
+
+    ]
+
+Spinner: any one fro here
+        Ref link :https://medium.com/flutter-community/custom-loading-indicators-in-flutter-with-spinkit-cheatsheet-7378bf0e2abb
+
+        child: SpinKitRotatingCircle(color: Colors.white)
+        child: SpinKitRotatingPlain(color: Colors.white)
+        child: SpinKitChasingDots(color: Colors.white)
+        child: SpinKitPumpingHeart(color: Colors.white)
+        child: SpinKitPulse(color: Colors.white)
+        child: SpinKitDoubleBounce(color: Colors.white)
+        child: SpinKitWave(color: Colors.white, type: SpinKitWaveType.start)
+        child: SpinKitWave(color: Colors.white, type: SpinKitWaveType.center)
+        child: SpinKitWave(color: Colors.white, type: SpinKitWaveType.end)
+        child: SpinKitThreeBounce(color: Colors.white)
+        child: SpinKitWanderingCubes(color: Colors.white)
+        child: SpinKitWanderingCubes(color: Colors.white, shape: BoxShape.circle)
+        child: SpinKitCircle(color: Colors.white)
+        child: SpinKitFadingFour(color: Colors.white)
+        child: SpinKitFadingFour(color: Colors.white, shape: BoxShape.rectangle)
+        child: SpinKitFadingCube(color: Colors.white)
+        child: SpinKitCubeGrid(size: 51.0, color: Colors.white)
+        child: SpinKitFoldingCube(color: Colors.white)
+        child: SpinKitRing(color: Colors.white)
+        child: SpinKitDualRing(color: Colors.white)
+        child: SpinKitRipple(color: Colors.white)
+        child: SpinKitFadingGrid(color: Colors.white)
+        child: SpinKitFadingGrid(color: Colors.white, shape: BoxShape.rectangle)
+        child: SpinKitHourGlass(color: Colors.white)
+        child: SpinKitSpinningCircle(color: Colors.white)
+        child: SpinKitSpinningCircle(color: Colors.white, shape: BoxShape.rectangle)
+        child: SpinKitFadingCircle(color: Colors.white)
+        child: SpinKitPouringHourglass(color: Colors.white)
+
+
+Modal Data:
+            Service calls Imports:
+
+            import 'dart:async';
+            import 'dart:convert';
+            import 'package:flutter/cupertino.dart';
+
+
+            class Post {
+                String title;
+                String body;
+
+                Post({
+                    this.title,
+                    this.body,
+                });
+
+                factory Post.fromJson(Map<String, dynamic> json) => Post(
+                    title: json["title"],
+                    body: json["body"],
+                );
+            }
+
+            class Webservice {
+                Future<List> getPost() async{
+                final source = await http.get("https://jsonplaceholder.typeicode.com/post");
+                dynamic result =  jsonDecode(source.body);
+                return result.map((json)=> Post.fromJson(json)).toList();
+                }
+            }
+
+FutureBuilder:
+
+            child: FutureBuilder(
+                future: Webservice().getPost(),
+                builder: (context, snapshot) {
+                    if (snapshot.connectionState ==
+                        ConnectionState.done) {
+                    return ListView.builder(
+                        controller: cnt,
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (context, index) {
+                            return ListTile(
+                            trailing: Icon(
+                                Icons.check_circle,
+                                color: Colors.blue,
+                            ),
+                            isThreeLine: false,
+                            subtitle: Text(snapshot.data[index].body),
+                            title: Text(snapshot.data[index].title,
+                                style: TextStyle(
+                                    color: Colors.grey[900],
+                                    fontWeight: FontWeight.bold)),
+                            );
+                        });
+                    } else {
+                    return Align(
+                        child: CircularProgressIndicator());
+                    }
+                })
+            )
+
+Input Box:
+
+   
+    TextField(
+    autocorrect: true,
+    keyboardType: TextInputType.number,
+    decoration: InputDecoration(
+        decoration: InputDecoration(      
+            //border: InputBorder.none,
+            enabledBorder: UnderlineInputBorder(      
+                    borderSide: BorderSide(color: Colors.cyan),  
+                    ),  
+            focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.cyan),
+            ),  
+
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(4)),
+                borderSide: BorderSide(width: 1,color: Colors.red),
+            ),
+            disabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(4)),
+                borderSide: BorderSide(width: 1,color: Colors.orange),
+            ),
+            enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(4)),
+                borderSide: BorderSide(width: 1,color: Colors.green),
+            ),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(4)),
+                borderSide: BorderSide(width: 1,)
+            ),
+            errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(4)),
+                borderSide: BorderSide(width: 1,color: Colors.black)
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(4)),
+                borderSide: BorderSide(width: 1,color: Colors.yellowAccent)
+            ),
+
+
+        ),
+        hintText: 'Please Enter Your Mobile Number',
+        hintStyle: TextStyle(color: Colors.grey, fontSize: 14.0),
+        prefixIcon: Icon(Icons.phone_iphone),
+        filled: true,
+        fillColor: Colors.grey[200],
+        contentPadding: EdgeInsets.symmetric(vertical: 5.0),
+        enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+        borderSide: BorderSide(color: Colors.white, width: 0),
+        ),
+        focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+        borderSide: BorderSide(color: Colors.white, width: 0),
+        ),
+    ),
+    )
+
+LandingpageSlider:
+
+    RefLink:   https://pub.dev/packages/introduction_screen
+    dependencies:
+        introduction_screen: ^1.0.7
+
+    List<PageViewModel> getPages() {
+        return [
+        PageViewModel(
+            image: Image.asset("assets/img/slide2.png"),
+            title: "Search Destination",
+            body:
+                "you want to travel somewhere and you don't know what is happeningthere",
+            decoration: const PageDecoration(
+                pageColor: Colors.white,
+                titleTextStyle: TextStyle(fontSize: 30.0),
+                bodyTextStyle: TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w300,
+                ))),
+        PageViewModel(
+            image: Image.asset("assets/img/slide1.png"),
+            title: "Search Destination",
+            body:
+                "you want to travel somewhere and you don't know what is happeningthere",
+            decoration: const PageDecoration(
+                pageColor: Colors.white,
+                titleTextStyle: TextStyle(fontSize: 30.0),
+                bodyTextStyle: TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w300,
+                ))),
+        PageViewModel(
+            image: Image.asset("assets/img/slide3.png"),
+            title: "Search Destination",
+            body:
+                "you want to travel somewhere and you don't know what is happeningthere",
+            decoration: const PageDecoration(
+                pageColor: Colors.white,
+                titleTextStyle: TextStyle(fontSize: 30.0),
+                bodyTextStyle: TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w300,
+                ))),
+        ];
+    }
+
+    IntroductionScreen(
+        dotsDecorator: DotsDecorator(
+          size: const Size.square(10.0),
+          activeSize: const Size(20.0, 10.0),
+          activeColor: Colors.yellow,
+          color: Colors.black26,
+          spacing: const EdgeInsets.symmetric(horizontal: 3.0),
+          activeShape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25.0)
+          )
+        ),
+        globalBackgroundColor: Colors.white,
+        pages: getPages(),
+        showNextButton: true,
+        showSkipButton: true,
+        skip: Text("Skip"),
+        done: Text("Got it "),
+        onDone: () {
+          Navigator.pushNamed(context, conHomeRoute);
+        },
+      )
+
+
+
+
+Animation.css:
+
+        Ref Link : https://github.com/sharp3dges/animator#readme
+
+        flutter_animator: ^2.0.9
+
+        import 'package:flutter_animator/flutter_animator.dart';
+
+       
+        class _WelcomeSrnState extends State<WelcomeSrn> {
+
+            final GlobalKey<CrossFadeABState> crossFadeAnimation =
+                GlobalKey<CrossFadeABState>();
+
+            final GlobalKey<AnimatorWidgetState> basicAnimation =
+                GlobalKey<AnimatorWidgetState>();
+
+            final GlobalKey<InOutAnimationState> inOutAnimation =
+                GlobalKey<InOutAnimationState>();
+
+            ......
+            ......
+            @override
+            ......
+            ......
+            ......
+
+
+            child: FadeInLeft(
+                child: FlatButton(
+                    shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(8.0),
+                        side: BorderSide(color: Color(0xffdfdfdf))),
+                    color: Colors.white,
+                    onPressed: () {},
+                    child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                        Image.asset('assets/img/google.png', scale: 3.0),
+                        Text(
+                        '  Google',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w400),
+                        ),
+                    ],
+                )),
+            ),
+        }
+
+ListTile:
+        new ListTile(
+            leading: Icon(Icons.person),
+            title: new TextField(
+            decoration:
+                new InputDecoration(
+                hintText: "Name",
+            ),
+            ),
+        ),
+
+Form Validation:
+
+    final registFormKey = GlobalKey<FormState>();
+    var _raFirstName = TextEditingController();
+
+
+    Form(
+        key: registFormKey,
+        autovalidate: true,
+        child: Column(
+        children: [
+            // form fields
+            TextFormField(
+            validator: (value) {
+                validator: (value) {
+                    String patttern =
+                        r'(^(?:[+0]9)?[0-9]{10,12}$)';
+                    RegExp regExp = new RegExp(patttern);
+                    if (value.length == 0) {
+                        return 'Please enter mobile number';
+                    } else if (!regExp.hasMatch(value)) {
+                        return 'Please enter valid mobile number';
+                    } else {
+                        return null;
+                    }
+                },
+            },
+            controller: _raFirstName,
+            keyboardType: TextInputType.text,
+            decoration: InputDecoration(
+                //border: InputBorder.none,
+                enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                    color: Color(0xffdfdfdf), width: 0.5),
+                ),
+                hintText: '',
+                labelText: 'First Name ',
+                labelStyle: TextStyle(color: Colors.grey),
+            ),
+            ),
+
+
+Create Clikc function for Enything:
+    0.) GestureDetector give option for click
+    1.) AbsorbPointer disabe the fields
+
+        GestureDetector(
+            onTap: () {
+            showModalBottomSheet(
+                context: context,
+                builder: (BuildContext bc) {
+                    return Container(
+                    color: Colors.white,
+                    height: 300,
+                    child: CupertinoDatePicker(
+                        mode:
+                            CupertinoDatePickerMode.dateAndTime,
+                        onDateTimeChanged: (dateTime) {}),
+                    );
+                });
+            },
+            child: AbsorbPointer(
+                child: TextFormField(
+                enabled : false,
+                .....
+                .....
+                .....
+
+DropDown:
+
+        showCupertinoModalPopup<void>(
+            context: context,
+            builder: (BuildContext context) {
+            return CupertinoActionSheet(
+                title: Text('Select Gender'),
+                actions: <Widget>[
+                CupertinoActionSheetAction(
+                    child: Text('Profiteroles'),
+                    onPressed: () {/** */},
+                ),
+                CupertinoActionSheetAction(
+                    child: Text('Cannolis'),
+                    onPressed: () {/** */},
+                ),
+                CupertinoActionSheetAction(
+                    child: Text('Trifie'),
+                    onPressed: () {/** */},
+                ),
+                ],
+                cancelButton: CupertinoActionSheetAction(
+                isDefaultAction: true,
+                child: Text('Cancel'),
+                onPressed: () {/** */},
+                ),
+            );
+            },
+        );
+
+
+HTTTP POST:
+
+    var response =  await http.post(
+        'http://wananow-data-web.azurewebsites.net/v1/auth/signin',
+        headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+        "usernameOrEmailOrMobileNo": "1111111111",
+        "password": "rameshtest1"
+        }),
+    );
+
+    if (response.statusCode == 200) {
+        Login data  = Login.fromJson(response.body);
+        print(data.accessToken);
+    } else {
+        throw Exception('Failed to load album');
+    }
+
+HTTTP GET:
+
+    var response =  await http.get('http://wananow-data-web.azurewebsites.net/v1/auth/signin'),
+    );
+
+    if (response.statusCode == 200) {
+        Login data  = Login.fromJson(response.body);
+        print(data.accessToken);
+    } else {
+        throw Exception('Failed to load album');
+    }
+
+Regex Patten:
+
+    ^(?:[+0]9)?[0-9]{10}$
+        ^ Start of string
+        (?:[+0]9)? Optionally match a + or 0 followed by 9
+        [0-9]{10} Match 10 digits
+        $ End of string
+
+
+
+MobX Basic:
+    cmd: flutter packages pub run build_runner watch
+
+
+
+    import 'package:mobx/mobx.dart';
+    part 'helper.g.dart';
+    class Helper = _Helper with _$Helper;
+    abstract class _Helper with Store {
+    @observable
+    var loader = false;
+
+    @action
+    void stop() {
+        loader = false;
+    }
+
+    @action
+    void start() {
+        loader = true;
+    }
+    }
+
+
+
+
+Prevent Bck Option:
+
+
+    class SecondScreen extends StatelessWidget {
+        @override
+        Widget build(BuildContext context) {
+        return new WillPopScope(
+            onWillPop: () async => false,
+            child: Scaffold(
+            appBar: AppBar(
+                title: Text("Second Screen"),
+            ),
+            body: Center(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                    RaisedButton(
+                        child: Text('Back'),
+                        onPressed: () {
+                        Navigator.pop(context);
+                        },
+                    ),
+                    ],
+                )
+            ),
+            ),
+        );
+        }
+    }
+
+
+Button:
+
+        FlatButton(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18.0),
+                side: BorderSide(color: Colors.red)),
+            color: Colors.white,
+            textColor: Colors.red,
+            padding: EdgeInsets.all(8.0),
+            onPressed: () {},
+            child: Text(
+                "Add to Cart".toUpperCase(),
+                style: TextStyle(
+                fontSize: 14.0,
+                ),
+            ),
+        ),
+
+        Properties:
+
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18.0),
+            side: BorderSide(color: Colors.red)
+        ),
+
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(0.0),
+            side: BorderSide(color: Colors.red)
+        ),
+
+
+        Container(
+            margin: EdgeInsets.symmetric(vertical: 40.0),
+            height: 40.0,
+            child: FlatButton(
+            onPressed: () {
+                Navigator.pushNamed(context, conLoginSMSRoute);
+            },
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(25.0),
+                side: BorderSide(color: Color(tw_blue)),
+            ),
+            child: Text(
+                "  Next  ",
+                style: TextStyle(
+                fontSize: 20.0,
+                color: Color(tw_blue),
+                fontWeight: FontWeight.w200,
+                ),
+            ),
+            ),
+        ),
+
+
+Slideable::
+
+        Slidable(
+            enabled: true,
+            actionPane: SlidableStrechActionPane(),
+            actionExtentRatio: 0.25,
+            child: Container(
+                color: Colors.white,
+                child: ListTile(
+                leading: CircleAvatar(
+                    radius: 22.0,
+                    backgroundImage: AssetImage('assets/dummy/avatar/${avatars[index].img}')
+                ),
+                title: Text(
+                    avatars[index].title,
+                    style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14.0,
+                    ),
+                ),
+                subtitle: Text(
+                    avatars[index].subtitle,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                        color: Color(tw_grey1),
+                    )),
+                trailing: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                    SizedBox(height: 8.0),
+                    Text(
+                        "9:45AM",
+                        style: TextStyle(
+                            color: Color(tw_grey1),
+                            fontSize: 12.0),
+                    ),
+                    avatars[index].recent ? Container(
+                        margin: EdgeInsets.only(top: 5.0),
+                        width: 10.0,
+                        height: 10.0,
+                        decoration: BoxDecoration(
+                            color: Color(tw_blue),
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(50.0)))) : SizedBox(height: 0.0)
+                    ],
+                ),
+                ),
+            ),
+            secondaryActions: <Widget>[
+                IconSlideAction(
+                caption: 'Delete',
+                color: Colors.red,
+                icon: Icons.delete,
+                onTap: () => {},
+                ),
+                IconSlideAction(
+                caption: 'Archive',
+                color: Colors.black45,
+                icon: Icons.archive,
+                onTap: () => {},
+                ),
+            ],
+            );
+
+
+Loading Bar : like facebook.
+
+    Shimmer.fromColors(
+    baseColor: Color(tw_grey),
+    highlightColor: Color(tw_grey2),
+    child: ListView.builder(
+        itemCount: 10,
+        itemBuilder: (_, __) {
+            return Container(
+            padding: EdgeInsets.symmetric(horizontal: 15.0),
+            margin: EdgeInsets.only(bottom: 10.0),
+            child: Row(
+                children: [
+                CircleAvatar(
+                    radius: 22.0,
+                    backgroundColor: Colors.grey,
+                ),
+                Expanded(
+                    flex: 10,
+                    child: Container(
+                    margin: EdgeInsets.symmetric(
+                        horizontal: 10.0),
+                    child: Column(
+                        mainAxisAlignment:
+                            MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment:
+                            CrossAxisAlignment.start,
+                        children: [
+                        Container(
+                            height: 8.0,
+                            color: Colors.grey),
+                        SizedBox(width: 0.0, height: 8.0),
+                        Container(
+                            height: 6.0,
+                            width: 120.0,
+                            color: Colors.grey),
+                        ],
+                    ),
+                    ),
+                ),
+                Expanded(
+                    child: Container(
+                    alignment: Alignment.topRight,
+                    margin: EdgeInsets.symmetric(
+                        horizontal: 5.0),
+                    child: Column(
+                        mainAxisAlignment:
+                            MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment:
+                            CrossAxisAlignment.end,
+                        children: [
+                        Container(
+                            height: 5.0,
+                            color: Colors.grey),
+                        SizedBox(width: 0.0, height: 8.0),
+                        CircleAvatar(backgroundColor: Colors.grey, radius: 5.0)
+                        ],
+                    ),
+                    ),
+                )
+                ],
+            ),
+            );
+        }),
+        );
+
+
+SilverGrid::
+
+            CustomScrollView(
+                slivers: [
+                SliverGrid(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 10.0,
+                        mainAxisSpacing: 10.0
+                    ),
+                    delegate: SliverChildBuilderDelegate(
+                        (BuildContext context, int index) {
+                        return Container(
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: AssetImage(
+                                    'assets/dummy/avatar/image1.png'),
+                                fit: BoxFit.cover,
+                            ),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10.0))),
+                        child: const Text(
+                            "Italy",
+                            style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            ),
+                        ),
+                        );
+                    }, childCount: 5))
+                ],
+            )
+
+
+MobX: function
+
+    import 'package:mobx/mobx.dart';
+    part 'helper.g.dart';
+    class Helper = _Helper with _$Helper;
+    abstract class _Helper with Store {
+        @observable
+        var loader = false;
+
+        @action
+        void stop() {
+            loader = false;
+        }
+
+        @action
+        void start() {
+            loader = true;
+        }
+    }
+
+Custom appBar:
+
+    appBar: AppBar(
+        leading: Row(
+          children: [
+            Icon(Icons.arrow_back_ios, color: Colors.black),
+            Text(
+              "back",
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
+            )
+          ],
+        ),
+        actions: [
+          Container(
+            margin: EdgeInsets.only(top: 15.0, right: 10.0),
+            child: Text(
+              "Edit Profile",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold),
+            ),
+          )
+        ],
+      ),
+
+
+App Bar:
+
+    appBar: AppBar(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        elevation: 0.0,
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Row(
+            children: [
+              Icon(Icons.arrow_back_ios, color: Theme.of(context).iconTheme.color),
+              Text(
+                "back",
+                style:
+                    TextStyle(color: Theme.of(context).iconTheme.color, fontWeight: FontWeight.w600),
+              )
+            ],
+          ),
+        ),
+        actions: [
+          Container(
+            // color: Colors.red,
+            alignment: Alignment.centerRight,
+            padding: EdgeInsets.only(right: 10.0),
+            child: Text(
+              "Edit Profile",
+              style: TextStyle(
+                  color: Theme.of(context).iconTheme.color,
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold),
+            ),
+          )
+        ],
+    ),
+
+
+CircleAvatar(
+        backgroundImage: ExactAssetImage("assets/img/ram.jpg"),
+    )
+
+gradient:
+            gradient: RadialGradient(
+                colors: [
+                  Colors.red,
+                  Colors.blue,
+                ],
+              )
+Popup:
+    showDialog(
+            context: context,
+            builder: (BuildContext context) {
+                return AlertDialog(
+                content: Stack(
+                    children: [
+                    Positioned(
+                        child: CircleAvatar(
+                        radius: 50.0,
+                        child: Icon(Icons.account_circle),
+                    ))
+                    ],
+                ),
+                );
+            });
+
+
+Flutter + Redux.
+
+    file : actio.dart
+
+        import 'package:flutter/foundation.dart';
+        abstract class Action {}
+
+        class UpdateSearch extends Action {
+            String payload;
+            UpdateSearch({
+                this.payload,
+            });
+        }
+
+    file : reducer:dart
+        import 'package:hands2gether/redux/action.dart';
+        import 'package:hands2gether/redux/store.dart';
+
+        AppState reducers(AppState prevState, dynamic action) {
+            AppState newState;
+
+            if (action is UpdateSearch) {
+                print(action);
+                print(action.payload);
+                newState = AppState.copyWith(prev: prevState, search: action.payload);
+            }
+
+            return newState;
+        }
+
+    file : store.dart
+   
+        class AppState {
+            String search;
+            AppState({
+                this.search,
+            });
+
+            AppState.copyWith({
+                AppState prev,
+                String search,
+            }) {
+                this.search = search ?? prev.search;
+            }
+
+            AppState.initial() {
+                this.search = "ramesh";
+            }
+        }
+   
+    file : main.dart
+
+        void main() async {
+ 
+            .....
+            .....
+                Store<AppState> store =
+                Store<AppState>(reducers, initialState: AppState.initial());
+
+                runApp(MyApp(store: store));
+            }
+
+    some Widgets:
+
+             StoreConnector<AppState, AppState>(
+                converter: (store) => store.state,
+                builder: (context, state) => Text(${store.search}));
+
+            StoreProvider.of<AppState>(context).dispatch(UpdateSearch(payload:"ilamathi"));
