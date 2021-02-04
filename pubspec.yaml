@@ -25,14 +25,18 @@ dependencies:
     sdk: flutter
 
   firebase_core: ^0.5.3
-  # cloud_firestore: ^0.14.3
   cloud_firestore: ^0.14.4
   firebase_analytics: ^6.3.0
   firebase_auth: ^0.18.4+1
   google_sign_in: ^4.5.6
   rxdart: ^0.21.0
   gson: ^0.1.4
+  image_picker:
+  firebase_storage:
+  permission_handler:
+  firebase_messaging:
 
+  intl: ^0.16.1
   mobx: ^1.2.1+4
   flutter_mobx: ^1.1.0+2
   mobx_codegen: ^1.1.2

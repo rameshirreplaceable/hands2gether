@@ -53,11 +53,16 @@ class Api {
     return ref.doc(id).delete();
   }
 
-  Future<DocumentReference> addDocument(Map data) {
-    return ref.add(data);
+  Future<dynamic> addDocument(dynamic data) async {
+    ref.add(data).then((value){
+      return updateDocument({'id': value.id}, value.id);
+    });
+  }
+  Future<dynamic> setDocument(String id, dynamic data) {
+    return ref.doc(id).set(data); 
   }
 
-  Future<void> updateDocument(Map data, String id) {
+  Future<void> updateDocument(dynamic data, String id) {
     return ref.doc(id).update(data);
   }
 }

@@ -275,7 +275,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   padding: EdgeInsets.all(8.0),
                                                   child: ListTile(
                                                     leading: Hero(
-                                                      tag: searchResult[i].id,
+                                                      tag: i,
                                                       child: CircleAvatar(
                                                         backgroundColor: Color(
                                                                 int.parse(state
@@ -292,17 +292,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   Colors.white,
                                                               fontSize: 14),
                                                         ),
-                                                        backgroundImage: searchResult[
-                                                                            i]
-                                                                        .images !=
-                                                                    null &&
-                                                                searchResult[i]
-                                                                    .images
-                                                                    .isNotEmpty
-                                                            ? NetworkImage(
-                                                                searchResult[i]
-                                                                    .images[0])
-                                                            : null,
+                                                        backgroundImage:
+                                                            _circleImage(
+                                                                searchResult[
+                                                                    i]),
                                                       ),
                                                     ),
                                                     title: Text(
@@ -358,5 +351,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ));
+  }
+
+  _circleImage(listingModelList) {
+    var temp = '';
+    if (listingModelList.images != null &&
+        listingModelList.images.length != 0) {
+      for (var i in listingModelList.images) {
+        if (i != null && i != '') temp = i;
+      }
+    }
+    return temp != '' ? NetworkImage(temp) : null;
   }
 }

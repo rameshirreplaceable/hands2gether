@@ -1,1 +1,11 @@
 Country : https://raw.githubusercontent.com/stefanbinder/countries-states/master/countries.json
+
+
+SHA MAC :
+
+        keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android
+
+For Firebase Push Notifiaction:
+        0.) cmd: npm install -g firebase-tools
+        1.) cmd: firebase login
+        2.) cmd: firebase init functions

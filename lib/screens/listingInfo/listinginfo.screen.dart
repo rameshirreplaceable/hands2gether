@@ -44,46 +44,43 @@ class _ListingInfoScreenState extends State<ListingInfoScreen> {
     for (var val in res.docs) {
       temp.add(Commentsmodel.fromMap(val.data()));
     }
-    // Comparator<Commentsmodel> priceComparator =
-    //     (a, b) => a.date.compareTo(b.date);
-    // temp.sort(priceComparator);
     setState(() {
       oldcomments = temp;
     });
   }
 
-  saveComments() async {
-    setState(() {
-      stopediting = false;
-    });
-    var listId = widget.data.id;
-    var userId = _auth.currentUser.providerData[0].uid;
-    var photoURL = _auth.currentUser.providerData[0].photoURL;
-    var displayName = _auth.currentUser.providerData[0].displayName;
+  saveComments(userModelList) async {
+    print(userModelList);
+    // setState(() {
+    //   stopediting = false;
+    // });
+    // var listId = widget.data.id;
+    // var userId = _auth.currentUser.providerData[0].uid;
+    // var photoURL = _auth.currentUser.providerData[0].photoURL;
+    // var displayName = _auth.currentUser.providerData[0].displayName;
 
-    Commentsmodel data = Commentsmodel(
-        comment: msgController.text,
-        date: Timestamp.now(),
-        listid: listId,
-        userid: userId,
-        displayName: displayName,
-        photoURL: photoURL);
+    // Commentsmodel data = Commentsmodel(
+    //     comment: msgController.text,
+    //     date: Timestamp.now(),
+    //     listid: listId,
+    //     userid: userId,
+    //     displayName: displayName,
+    //     photoURL: photoURL);
 
-    _apiComments
-        .addDocument(data.toMap())
-        .then((value) => {
-              msgController.clear(),
-              fetchComments(),
-              setState(() {
-                stopediting = true;
-              })
-            })
-        .catchError(() => {print("Error on Add comments")})
-        .whenComplete(() => {
-              setState(() {
-                stopediting = true;
-              })
-            });
+    // _apiComments
+    //     .addDocument(data.toMap())
+    //     .then((value) => {
+    //           msgController.clear(),
+    //           fetchComments(),
+    //           setState(() {
+    //             stopediting = true;
+    //           })
+    //         })
+    //     .whenComplete(() => {
+    //           setState(() {
+    //             stopediting = true;
+    //           })
+    //         });
   }
 
   @override
@@ -201,6 +198,7 @@ class _ListingInfoScreenState extends State<ListingInfoScreen> {
                       SizedBox(height: 5.0),
                       Container(
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             oldcomments.length == 0
@@ -223,10 +221,10 @@ class _ListingInfoScreenState extends State<ListingInfoScreen> {
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 12),
                                   ),
-                                  backgroundImage: i.photoURL != null &&
-                                          i.photoURL.isNotEmpty
-                                      ? NetworkImage(i.photoURL)
-                                      : null,
+                                  backgroundImage:
+                                      i.photoURL != null && i.photoURL != ''
+                                          ? NetworkImage(i.photoURL)
+                                          : null,
                                 ),
                                 title: Text(
                                   i.displayName,
@@ -246,13 +244,15 @@ class _ListingInfoScreenState extends State<ListingInfoScreen> {
                           ],
                         ),
                       ),
+                      SizedBox(height: 20.0),
                       Padding(
                         padding: EdgeInsets.symmetric(
                             vertical: 16.0, horizontal: 0.0),
                         child: TextField(
                           onSubmitted: (value) {
-                            saveComments();
+                            saveComments(state.userModelList);
                           },
+                          textInputAction: TextInputAction.done,
                           controller: msgController,
                           decoration: InputDecoration(
                             enabled: stopediting,
@@ -271,7 +271,7 @@ class _ListingInfoScreenState extends State<ListingInfoScreen> {
                               left: 20,
                             ),
                             suffixIcon: GestureDetector(
-                              onTap: () => {saveComments()},
+                              onTap: (){saveComments(state.userModelList); FocusScope.of(context).unfocus();},
                               child: Padding(
                                 padding:
                                     EdgeInsets.only(right: 16.0, left: 24.0),
@@ -294,25 +294,29 @@ class _ListingInfoScreenState extends State<ListingInfoScreen> {
   }
 
   buildSlider(data) {
+    List temp1 = [];
+    List temp =
+        (data.images != null && data.images.length != 0) ? data.images : [];
+    for (var i in temp) {
+      if (i != null && i != '') temp1.add(i);
+    }
+    temp1 = temp1.length != 0 ? temp1 : [null];
     return Container(
       padding: EdgeInsets.only(left: 15),
       height: 250.0,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         primary: false,
-        itemCount: data.images != null ? data.images.length : 0,
+        itemCount: temp1.length,
         itemBuilder: (BuildContext context, int index) {
-          var url = data.images[index];
+          var url = temp1[index];
           return Padding(
             padding: EdgeInsets.only(right: 10.0),
             child: index == 0
                 ? Hero(
-                    tag: data.id,
+                    tag: index,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10.0),
-                      // child: Text(
-                      //   data.images[index],
-                      // )
                       child: url != null && url.isNotEmpty
                           ? Image.network(
                               url,
@@ -331,9 +335,6 @@ class _ListingInfoScreenState extends State<ListingInfoScreen> {
                       borderRadius: BorderRadius.circular(
                         10.0,
                       ),
-                      // child: Text(
-                      //   data.images[index],
-                      // )
                       child: url != null && url.isNotEmpty
                           ? Image.network(
                               url,

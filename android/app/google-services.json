@@ -38,6 +38,13 @@
             {
               "client_id": "574967526421-5l9a2rdtv58itmm5l2sb4mmd1ovm2qjs.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "574967526421-nh10cm93nf1dcs58hspl1g5hqcaseees.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.hands2gether"
+              }
             }
           ]
         }

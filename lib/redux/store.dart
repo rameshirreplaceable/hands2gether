@@ -3,6 +3,7 @@ import 'package:hands2gether/redux/theme.model.dart';
 class AppState {
   ThemeModel theme;
   String mydata;
+  List userModelList;
   List categoryModelList;
   List listingdModelList;
 
@@ -10,6 +11,7 @@ class AppState {
       {this.theme,
       this.mydata,
       this.categoryModelList,
+      this.userModelList,
       this.listingdModelList});
 
   factory AppState.initial() {
@@ -21,6 +23,7 @@ class AppState {
         theme: "yellow",
       ),
       mydata: 'ramesh',
+      userModelList: List.empty(),
       categoryModelList: List.empty(),
       listingdModelList: List.empty(),
     );
@@ -30,11 +33,13 @@ class AppState {
       {AppState prev,
       ThemeModel theme,
       String mydata,
+      List userModelList,
       List categoryModelList,
       List listingdModelList}) {
     return AppState(
       theme: theme ?? prev.theme,
       mydata: mydata ?? prev.mydata,
+      userModelList: userModelList ?? prev.userModelList,
       categoryModelList: categoryModelList ?? prev.categoryModelList,
       listingdModelList: listingdModelList ?? prev.listingdModelList,
     );
@@ -59,6 +64,13 @@ class Updatecategory {
 class Updatelistings {
   List payload;
   Updatelistings({
+    this.payload,
+  });
+}
+
+class UpdateUser {
+  List payload;
+  UpdateUser({
     this.payload,
   });
 }
@@ -92,6 +104,10 @@ AppState reducers(AppState prevState, dynamic action) {
   if (action is Updatelistings) {
     newState =
         AppState().copyWith(prev: prevState, listingdModelList: action.payload);
+  }
+  if (action is UpdateUser) {
+    newState =
+        AppState().copyWith(prev: prevState, userModelList: action.payload);
   }
 
   return newState;

@@ -113,6 +113,18 @@ class _CustomAppbarState extends State<CustomAppbar> {
                                       _auth.currentUser != null
                                           ? new ListTile(
                                               leading: new Icon(
+                                                Icons.notifications_active_outlined,
+                                                color: Color(int.parse(
+                                                    state.theme.primaryColor)),
+                                              ),
+                                              title: new Text('Notification'),
+                                              onTap: () => {
+                                                Navigator.pushNamed(context, '/notifications')
+                                              })
+                                          : SizedBox(),
+                                      _auth.currentUser != null
+                                          ? new ListTile(
+                                              leading: new Icon(
                                                 Icons.invert_colors_on,
                                                 color: Color(int.parse(
                                                     state.theme.primaryColor)),

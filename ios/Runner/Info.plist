@@ -52,6 +52,8 @@
                 </array>
             </dict>
         </array>
+        <key>NSPhotoLibraryUsageDescription</key>
+        <string>Permission to access photo gallery</string>
 
 
     </dict>
